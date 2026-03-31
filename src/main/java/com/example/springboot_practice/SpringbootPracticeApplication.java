@@ -36,10 +36,12 @@ public class SpringbootPracticeApplication implements CommandLineRunner {
 //		beanCreation1.bean();
 //		beanCreation2.bean();
 //		notificationService.send("Hello");
-		for(var notificationService: notificationServiceMap.entrySet()){
-			System.out.println(notificationService.getKey());
-			notificationService.getValue().send("Hello");
-		}
+//		....................................................................
+//		for(var notificationService: notificationServiceMap.entrySet()){
+//			System.out.println(notificationService.getKey());
+//			notificationService.getValue().send("Hello");
+//		}
+//		...............................................................
 	}
 
 
