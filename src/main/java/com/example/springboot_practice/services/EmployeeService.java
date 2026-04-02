@@ -2,6 +2,7 @@ package com.example.springboot_practice.services;
 
 import com.example.springboot_practice.dto.EmployeeDto;
 import com.example.springboot_practice.entities.EmployeeEntity;
+import com.example.springboot_practice.exception.ResourceNotFoundException;
 import com.example.springboot_practice.repositories.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.util.ReflectionUtils;
@@ -42,29 +43,30 @@ public class EmployeeService {
     }
 
     public EmployeeDto updatedEmployeeById(Long employeeId, EmployeeDto employeeDto) {
+        isExistsByEmployeeId(employeeId);
         EmployeeEntity employeeEntity = modelMapper.map(employeeDto, EmployeeEntity.class);
         employeeEntity.setId(employeeId);
         EmployeeEntity saveEmployeeEntity = employeeRepository.save(employeeEntity);
         return modelMapper.map(saveEmployeeEntity, EmployeeDto.class);
     }
-    public boolean isExistsyEmployeeId(Long id){
-        return employeeRepository.existsById(id);
+    public void isExistsByEmployeeId(Long id){
+        boolean exist = employeeRepository.existsById(id);
+        if(!exist) throw new ResourceNotFoundException("Employee with id: "+id+ " not found");
     }
 
     public boolean deleteEmployeeById(Long employeeId) {
-        boolean exist = isExistsyEmployeeId(employeeId);
-        if(!exist) return false;
+        isExistsByEmployeeId(employeeId);
         employeeRepository.deleteById(employeeId);
         return true;
     }
 
     public EmployeeDto updatePartialEmployeeById(Long employeeId, Map<String, Object> updates) {
-        if(!isExistsyEmployeeId(employeeId)) return null;
+       isExistsByEmployeeId(employeeId);
         EmployeeEntity employeeEntity = employeeRepository.findById(employeeId).get();
         updates.forEach((field,value)->{
-            Field feildToBeUpdated = ReflectionUtils.findField(EmployeeEntity.class,field);
-            feildToBeUpdated.setAccessible(true);
-            ReflectionUtils.setField(feildToBeUpdated,employeeEntity,value);
+            Field fieldToBeUpdated = ReflectionUtils.findField(EmployeeEntity.class,field);
+            fieldToBeUpdated.setAccessible(true);
+            ReflectionUtils.setField(fieldToBeUpdated,employeeEntity,value);
         });
         return modelMapper.map(employeeRepository.save(employeeEntity),EmployeeDto.class);
 

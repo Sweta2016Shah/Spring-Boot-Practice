@@ -1,6 +1,7 @@
 package com.example.springboot_practice.controllers;
 
 import com.example.springboot_practice.dto.EmployeeDto;
+import com.example.springboot_practice.exception.ResourceNotFoundException;
 import com.example.springboot_practice.services.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -25,7 +27,7 @@ public class EmployeeController {
         Optional<EmployeeDto> employeeDto = employeeService.getEmployeeById(id);
         return employeeDto
                 .map(employeeDto1->ResponseEntity.ok(employeeDto1))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(()->new ResourceNotFoundException("Employee id not found: "+id));
     }
 
     @GetMapping
