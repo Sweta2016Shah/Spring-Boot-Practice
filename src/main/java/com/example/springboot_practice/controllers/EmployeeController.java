@@ -2,6 +2,7 @@ package com.example.springboot_practice.controllers;
 
 import com.example.springboot_practice.dto.EmployeeDto;
 import com.example.springboot_practice.services.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +34,13 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDto> createNewEmployee(@RequestBody EmployeeDto inputEmployee){
+    public ResponseEntity<EmployeeDto> createNewEmployee(@RequestBody @Valid EmployeeDto inputEmployee){
         EmployeeDto savedEmployee = employeeService.createNewEmployee(inputEmployee);
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{employeeId}")
-    public ResponseEntity<EmployeeDto> updatedEmployeeById(@RequestBody EmployeeDto employeeDto, @PathVariable Long employeeId){
+    public ResponseEntity<EmployeeDto> updatedEmployeeById(@RequestBody @Valid EmployeeDto employeeDto, @PathVariable Long employeeId){
         return ResponseEntity.ok(employeeService.updatedEmployeeById(employeeId, employeeDto));
     }
     @DeleteMapping(path = "/{employeeId}")
