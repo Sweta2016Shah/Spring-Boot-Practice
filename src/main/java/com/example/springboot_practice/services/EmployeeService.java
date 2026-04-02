@@ -3,7 +3,6 @@ package com.example.springboot_practice.services;
 import com.example.springboot_practice.dto.EmployeeDto;
 import com.example.springboot_practice.entities.EmployeeEntity;
 import com.example.springboot_practice.repositories.EmployeeRepository;
-import org.apache.el.util.ReflectionUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -22,9 +22,9 @@ public class EmployeeService {
         this.modelMapper = modelMapper;
     }
 
-    public EmployeeDto getEmployeeById(Long id) {
-        EmployeeEntity employeeEntity = employeeRepository.findById(id).orElse(null);
-        return modelMapper.map(employeeEntity, EmployeeDto.class);
+    public Optional<EmployeeDto> getEmployeeById(Long id) {
+        return employeeRepository.findById(id)
+                .map(employeeEntity->modelMapper.map(employeeEntity, EmployeeDto.class));
     }
 
     public List<EmployeeDto> getAllEmployees() {
