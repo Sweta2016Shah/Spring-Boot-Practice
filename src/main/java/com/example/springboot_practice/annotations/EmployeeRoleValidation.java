@@ -1,6 +1,5 @@
 package com.example.springboot_practice.annotations;
 
-import jakarta.persistence.Table;
 import jakarta.validation.Constraint;
 
 import java.lang.annotation.ElementType;
