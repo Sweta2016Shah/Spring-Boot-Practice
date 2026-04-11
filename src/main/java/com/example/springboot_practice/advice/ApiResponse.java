@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class ApiResponse<T> {
 //    @Pattern(regexp = "hh-mm-ss dd-mm-yyyy")
-    @JsonFormat(pattern = "hh:mm:ss dd-MM-yyy") //mm for min and MM for month
+//    @JsonFormat(pattern = "hh:mm:ss dd-MM-yyy") //mm for min and MM for month
     private LocalDateTime timeStamp;
     private T data;
     private ApiError error;
